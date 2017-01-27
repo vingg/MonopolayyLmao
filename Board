@@ -9,7 +9,7 @@ public class Image extends JFrame {
 
         this.getContentPane().setLayout(new FlowLayout());
         //JLabel label1 = new JLabel("Example Text");
-        ImageIcon icon = new ImageIcon("C:\\Users\\Laura\\Desktop\\MonopolayyLmao\\board2.jpg");
+        ImageIcon icon = new ImageIcon("C:\\Users\\Laura\\Desktop\\MonopolayyLmao\\board2.jpg");//Different for each of us
         JLabel label2 = new JLabel(icon);
 
         //add(label1);
