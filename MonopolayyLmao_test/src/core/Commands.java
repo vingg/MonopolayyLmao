@@ -224,27 +224,10 @@ public class Commands {
 				}
 				//move player a set amount ie: "step 3" moves player 3 spaces
 				else if (inputText[0].equalsIgnoreCase("step")){
-					if(gameState.getHasRolled()){
-						outputText = "You have used your roll for this turn\n";
-					}
-					else{
-						gameState.setHasRolled(true);
-						outputText = "You rolled:" + inputText[1] + "\n";
-						if (!gameState.getHasRolled()) outputText += "You rolled doubles\n";
-						//use this to bypass process roll
-						//turnPlayer.move(Integer.parseInt(inputText[1]));
-						
-						//use this to access process roll from debug
-						int[] temp = new int[2];
-						temp[0]=Integer.parseInt(inputText[1]);
-						temp[1]=0;
-						processRoll(temp);
-						Square currSquare = board.squares[turnPlayer.getPosition()];
-						if(currSquare.isOwned() && currSquare.owner() != currentTurn){
-							outputText += "You paid " + turnPlayer.payRent(currSquare)
-											+ " in rent to Player " + (currSquare.owner() +1) + "\n";
-						}
-					}
+					int rollArray[] = new int[2];
+					rollArray[0] = Integer.parseInt(inputText[1]);
+					rollArray[1] = Integer.parseInt(inputText[2]);
+					moveTurnPlayer(rollArray);
 				}
 
 		//COMMAND NOT AVAILABLE
@@ -293,39 +276,42 @@ public class Commands {
 		int result = rand.nextInt(6) + 1;
 		return result;
 	}
-
+	private void moveTurnPlayer(int rollArray[]){
+		int rollSum = rollArray[0] + rollArray[1];
+		outputText = "You have rolled: ";
+		
+		if(turnPlayer.inJail()){
+			rollInJail(rollArray);
+		}
+		else{
+			outputText += rollArray[0] + " + " + rollArray[1] + " = " + rollSum + "\n";
+			if(rollArray[0]==rollArray[1]){
+				gameState.rolledDoubles();
+				outputText += "You rolled doubles\n";
+			}
+			if(gameState.getDoublesThisTurn()>=3){
+				turnPlayer.moveToJail();
+				outputText += "You have been sent to jail for rolling 3 sets of doubles in a row!\n";
+				gameState.setHasRolled(true);
+			}
+			else{
+				gameState.setHasRolled(rollArray[0]!=rollArray[1]);
+				processRoll(rollArray);
+				}
+		}
+	}
 	private void moveTurnPlayer(){
 		if(gameState.getHasRolled()){
 			outputText = "You have used your roll for this turn\n";
 		}
 		else{
 			int rollArray[] = new int[2], rollSum = 0;
-			outputText = "You have rolled: ";
 			for (int i=0;i<2;i++){
 				int move = rollDice();
 				rollArray[i]=move;
 				rollSum += move;
 			}
-			if(turnPlayer.inJail()){
-				rollInJail(rollArray);
-			}
-			else{
-				outputText += rollArray[0] + " + " + rollArray[1] + " = " + rollSum + "\n";
-				if(rollArray[0]==rollArray[1]){
-					gameState.rolledDoubles();
-					outputText += "You rolled doubles\n";
-				}
-				if(gameState.getDoublesThisTurn()>=3){
-					turnPlayer.moveToJail();
-					outputText += "You have been sent to jail for rolling 3 sets of doubles in a row!\n";
-					gameState.setHasRolled(true);
-				}
-				else{
-					gameState.setHasRolled(rollArray[0]!=rollArray[1]);
-					processRoll(rollArray);
-					}
-			}
-
+			moveTurnPlayer(rollArray);
 		}
 	}
 
