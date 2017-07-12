@@ -390,18 +390,21 @@ public class Commands {
 		//first find square of current position
 		Square currSquare = board.squares[turnPlayer.getPosition()];
 		if(!currSquare.isOwnable()){
-			outputText = "Sorry, you cannot purchase this\n+"
+			outputText = "Sorry, you cannot purchase this.\n"
 					+"It is still your turn," + turnPlayer.getPlayerName() + "\n";
 		}
 		//and if it's not owned...
-		if(currSquare.isOwned()){
-			outputText = "Sorry, this is already owned\n"
+		else if(currSquare.isOwned()){
+			outputText += "Sorry, this is already owned\n"
 						+ "It is still your turn, " + turnPlayer.getPlayerName() + "\n";
 		}
-		//then buy it
+		else{
+			//then buy it
 		turnPlayer.buyProperty(currSquare);
-		outputText = "You have bought "+ currSquare.getName()+"\nYou now have "
+		outputText += "You have bought "+ currSquare.getName()+"\nYou now have "
 						+turnPlayer.balance.getBalance()+" in the bank\n";
+		}
+		
 	}
 
 	private void buildProperty(String propName){
