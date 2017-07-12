@@ -277,6 +277,13 @@ public class Commands {
 		return result;
 	}
 	private void moveTurnPlayer(int rollArray[]){
+
+		if(gameState.getHasRolled()){
+			outputText = "You have used your roll for this turn\n";
+		}
+		else{
+			
+		
 		int rollSum = rollArray[0] + rollArray[1];
 		outputText = "You have rolled: ";
 		
@@ -299,11 +306,9 @@ public class Commands {
 				processRoll(rollArray);
 				}
 		}
+		}
 	}
 	private void moveTurnPlayer(){
-		if(gameState.getHasRolled()){
-			outputText = "You have used your roll for this turn\n";
-		}
 		else{
 			int rollArray[] = new int[2], rollSum = 0;
 			for (int i=0;i<2;i++){
