@@ -1,3 +1,3 @@
 # MonopolayyLmao
 
-cash me outside howbow da?
+YOU WOULD NOT BELIEVE YOUR EYES
