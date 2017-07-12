@@ -309,7 +309,6 @@ public class Commands {
 		}
 	}
 	private void moveTurnPlayer(){
-		else{
 			int rollArray[] = new int[2], rollSum = 0;
 			for (int i=0;i<2;i++){
 				int move = rollDice();
@@ -317,7 +316,6 @@ public class Commands {
 				rollSum += move;
 			}
 			moveTurnPlayer(rollArray);
-		}
 	}
 
 	private void rollInJail(int[] rollArray){
